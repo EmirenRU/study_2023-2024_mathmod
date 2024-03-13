@@ -503,16 +503,16 @@ background-color: var(--r-background-color);
 <div class="sourceCode" id="cb1"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DifferentialEquations</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> N_i <span class="op">=</span> <span class="fl">200</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> N_l <span class="op">=</span> <span class="fl">3</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> k_l <span class="op">=</span> <span class="fl">1</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> m <span class="op">=</span> <span class="fl">1</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> k <span class="op">=</span> <span class="fl">1</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> d <span class="op">=</span> <span class="fl">1</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> omega_0 <span class="op">=</span> <span class="fu">sqrt</span>(k<span class="op">/</span>m)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> A <span class="op">=</span> <span class="fl">0</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> B <span class="op">=</span> <span class="fl">1</span> <span class="co"># sin(p(N+1)d) = 0</span></span></code></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> N_i <span class="op">=</span> <span class="fl">200</span> <span class="co"># Кол-во частиц</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> N_l <span class="op">=</span> <span class="fl">3</span> <span class="co"># Кол-во гармоник</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> m <span class="op">=</span> <span class="fl">1</span> <span class="co"># Масса частицы</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> k <span class="op">=</span> <span class="fl">1</span> <span class="co"># Жесткость пружинки</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> d <span class="op">=</span> <span class="fl">1</span> <span class="co"># Длина между двумя частицами</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> omega_0 <span class="op">=</span> <span class="fu">sqrt</span>(k<span class="op">/</span>m) <span class="co"># начальная частота колебаний стоячей волны</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> A <span class="op">=</span> <span class="fl">0</span> <span class="co"># по условию (выведена из расчётов)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> B <span class="op">=</span> <span class="fl">1</span> <span class="co"># Константу можно задать любым числом, </span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            <span class="co"># т.к. позже она исчезает из уравнения.</span></span></code></pre></div>
 <h2 id="блок-с-функциями-и-заполнением-данных">Блок с функциями и
 заполнением данных</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">Xi</span>(i)</span>
@@ -536,7 +536,7 @@ background-color: var(--r-background-color);
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> [<span class="fu">p_l</span>(l) for l <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N_l]</span></code></pre></div>
 <h2 id="блок-с-выводом-графиков-от-одной-переменной">Блок с выводом
 графиков от одной переменной</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> l <span class="kw">in</span> k_l<span class="op">:</span>N_l</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> l <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N_l</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    plt <span class="op">=</span> <span class="fu">plot</span>(legend<span class="op">=</span><span class="cn">true</span>,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    dpi<span class="op">=</span><span class="fl">256</span>,</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    size<span class="op">=</span>(<span class="fl">400</span>,<span class="fl">400</span>), </span>

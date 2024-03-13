@@ -33,7 +33,7 @@ omega = [omega_l(l) for l in 1:N_l]
 p = [p_l(l) for l in 1:N_l]
 
 for l in k_l:N_l
-    plt = plot(legend=true,
+    plt = plot(
     dpi=256,
     size=(400,400), 
     label="Гармоническая цепочка")
@@ -44,7 +44,7 @@ for l in k_l:N_l
     savefig(plt, "image/main_" * string(l) * "_.png")
 end
 
-plt = plot(legend=true, dpi=256, size=(400,400),
+plt = plot( dpi=256, size=(400,400),
   label="Гармоническая цепочка")
 
 y = [y_i(i, 1) for i in 1:N_i]   

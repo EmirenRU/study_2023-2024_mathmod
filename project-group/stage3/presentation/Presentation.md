@@ -78,16 +78,16 @@ header-includes:
 using Plots
 using DifferentialEquations
 
-const N_i = 200
-const N_l = 3
-const k_l = 1
-const m = 1
-const k = 1
-const d = 1
-const omega_0 = sqrt(k/m)
+const N_i = 200 # Кол-во частиц
+const N_l = 3 # Кол-во гармоник
+const m = 1 # Масса частицы
+const k = 1 # Жесткость пружинки
+const d = 1 # Длина между двумя частицами
+const omega_0 = sqrt(k/m) # начальная частота колебаний стоячей волны
 
-const A = 0
-const B = 1 # sin(p(N+1)d) = 0
+const A = 0 # по условию (выведена из расчётов)
+const B = 1 # Константу можно задать любым числом, 
+            # т.к. позже она исчезает из уравнения.
 ```
 
 ## Блок с функциями и заполнением данных
@@ -121,7 +121,7 @@ p = [p_l(l) for l in 1:N_l]
 ## Блок с выводом графиков от одной переменной
 
 ```julia
-for l in k_l:N_l
+for l in 1:N_l
     plt = plot(legend=true,
     dpi=256,
     size=(400,400), 
