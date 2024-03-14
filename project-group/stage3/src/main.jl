@@ -1,5 +1,4 @@
 using Plots
-using DifferentialEquations
 
 const N_i = 200
 const N_l = 3

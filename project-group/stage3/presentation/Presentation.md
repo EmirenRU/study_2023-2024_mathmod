@@ -76,7 +76,6 @@ header-includes:
 
 ``` julia
 using Plots
-using DifferentialEquations
 
 const N_i = 200 # Кол-во частиц
 const N_l = 3 # Кол-во гармоник
